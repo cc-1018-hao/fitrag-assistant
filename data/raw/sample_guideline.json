@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Fat Loss Nutrition Guide (Sample)",
+    "section": "Energy Deficit and Protein",
+    "publish_date": "2025-01-01",
+    "url": "https://example.org/fat-loss-guide",
+    "content": "A practical fat-loss phase should target a moderate calorie deficit of about 300 to 500 kcal per day. Keep protein intake high, roughly 1.6 to 2.2 grams per kilogram body weight per day, to preserve lean mass."
+  },
+  {
+    "title": "Strength Training Guide (Sample)",
+    "section": "Progressive Overload",
+    "publish_date": "2025-01-01",
+    "url": "https://example.org/strength-guide",
+    "content": "Strength gains require progressive overload with consistent tracking. Increase load, repetitions, or total sets gradually while maintaining technical quality and adequate recovery between hard sessions."
+  },
+  {
+    "title": "Recovery and Injury Prevention Guide (Sample)",
+    "section": "Warm-up and Load Management",
+    "publish_date": "2025-01-01",
+    "url": "https://example.org/recovery-guide",
+    "content": "Use a specific warm-up before compound lifts and avoid abrupt weekly load spikes. If joint pain persists or worsens, reduce training stress and seek evaluation from a qualified professional."
+  }
+]

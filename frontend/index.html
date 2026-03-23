@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FitRAG Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="bg-blobs" aria-hidden="true">
+      <span class="blob b1"></span>
+      <span class="blob b2"></span>
+      <span class="blob b3"></span>
+    </div>
+    <main class="page">
+      <header class="hero">
+        <p class="tag">Fitness · Nutrition · RAG</p>
+        <h1>FitRAG Assistant</h1>
+        <p class="sub">Ask one question and get a structured plan with traceable citations.</p>
+      </header>
+
+      <section class="panel">
+        <div class="controls">
+          <label for="baseUrl">API Base URL</label>
+          <input id="baseUrl" value="http://127.0.0.1:8000" />
+        </div>
+        <div class="controls">
+          <label for="question">Your Question</label>
+          <textarea
+            id="question"
+            rows="4"
+            placeholder="How can I lose fat while keeping strength and avoid shoulder overuse?"
+          ></textarea>
+        </div>
+        <button id="askBtn" class="ask-btn">Generate Plan</button>
+        <p id="status" class="status"></p>
+      </section>
+
+      <section id="result" class="result hidden">
+        <article class="card">
+          <h2>Summary</h2>
+          <p id="summary"></p>
+          <p class="meta">Intent: <span id="intent"></span> · Strategy: <span id="strategy"></span> · Confidence: <span id="confidence"></span></p>
+        </article>
+
+        <article class="card">
+          <h2>Plan</h2>
+          <div id="answerMarkdown" class="markdown"></div>
+        </article>
+
+        <article class="card">
+          <h2>Citations</h2>
+          <div id="citations" class="citations"></div>
+        </article>
+      </section>
+    </main>
+    <script src="./app.js"></script>
+  </body>
+</html>

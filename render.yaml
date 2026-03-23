@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: fitrag-assistant
+    runtime: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_BASE_URL
+        sync: false
+      - key: EMBEDDING_MODEL
+        sync: false
+      - key: CHAT_MODEL
+        sync: false
+      - key: CHROMA_PERSIST_DIR
+        value: ./storage/chroma
+      - key: CHROMA_COLLECTION
+        value: fitness_knowledge
+      - key: BM25_CORPUS_PATH
+        value: ./storage/bm25_corpus.jsonl
+      - key: CHUNK_SIZE
+        value: "800"
+      - key: CHUNK_OVERLAP
+        value: "120"
+      - key: TRUST_ENV_PROXY
+        value: "false"
