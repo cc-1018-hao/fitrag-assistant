@@ -3,94 +3,130 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FitRAG Coach</title>
+    <title>FitRAG Tactical Console</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div class="noise"></div>
-    <main class="wrap">
-      <header class="hero">
-        <div class="hero-copy">
-          <p class="kicker">FITNESS · NUTRITION · EVIDENCE</p>
-          <h1>FitRAG Coach</h1>
-          <p>
-            Build training and nutrition plans powered by books, papers, and trusted websites with
-            traceable citations.
-          </p>
-          <div class="tags">
-            <span>🏋️ Progressive Overload</span>
-            <span>🥗 Nutrition Strategy</span>
-            <span>📚 Evidence Citation</span>
-          </div>
+    <div class="grid-overlay"></div>
+    <main class="console">
+      <header class="topbar">
+        <div class="logo-stack">
+          <p class="kicker">FITRAG / TACTICAL MODE</p>
+          <h1>Coach Console</h1>
+          <p class="sub">Generate training plans with auditable evidence from books, papers, and websites.</p>
         </div>
-        <div class="hero-stat">
-          <div class="stat-card">
-            <strong id="bookCount">0</strong>
-            <span>Book Sources</span>
-          </div>
-          <div class="stat-card">
-            <strong id="paperCount">0</strong>
-            <span>Paper Sources</span>
-          </div>
-          <div class="stat-card">
-            <strong id="webCount">0</strong>
-            <span>Web Sources</span>
-          </div>
-        </div>
+        <div class="status-chip">SYSTEM READY</div>
       </header>
 
-      <section class="query-panel">
-        <div class="field">
-          <label for="baseUrl">API Base URL</label>
-          <input id="baseUrl" value="http://127.0.0.1:8000" />
-        </div>
-        <div class="field">
-          <label for="question">Ask Your Goal</label>
-          <textarea
-            id="question"
-            rows="4"
-            placeholder="Example: I want to lose fat while keeping strength, and my shoulder feels unstable during bench press."
-          ></textarea>
-        </div>
-        <div class="quick-actions">
-          <button class="chip" data-q="I want to lose fat while keeping muscle. How should I set calories and protein?">
-            Fat Loss + Muscle
-          </button>
-          <button class="chip" data-q="How do I increase squat strength over 8 weeks without overtraining?">
-            Strength Block
-          </button>
-          <button class="chip" data-q="My shoulder hurts in bench press. How should I adjust training safely?">
-            Injury Prevention
-          </button>
-        </div>
-        <button id="askBtn" class="cta">Generate Evidence-Based Plan</button>
-        <p id="status" class="status"></p>
+      <section class="tactical-grid">
+        <article class="panel panel-main">
+          <h2>Command Input</h2>
+          <div class="field">
+            <label for="baseUrl">API Endpoint</label>
+            <input id="baseUrl" value="http://127.0.0.1:8000" />
+          </div>
+          <div class="field">
+            <label for="question">Mission Prompt</label>
+            <textarea
+              id="question"
+              rows="5"
+              placeholder="Example: I want to cut fat while keeping strength and protect my shoulder."
+            ></textarea>
+          </div>
+          <div class="quick-actions">
+            <button class="chip" data-q="I want to lose fat while keeping muscle. How should I set calories and protein?">
+              Fat Cut
+            </button>
+            <button class="chip" data-q="How do I increase squat strength over 8 weeks without overtraining?">
+              Strength Block
+            </button>
+            <button class="chip" data-q="My shoulder hurts in bench press. How should I adjust training safely?">
+              Injury Safe
+            </button>
+          </div>
+          <button id="askBtn" class="cta">Execute Plan Build</button>
+          <p id="status" class="status"></p>
+        </article>
+
+        <article class="panel panel-side">
+          <h2>Evidence Radar</h2>
+          <div class="radar-list">
+            <div class="radar-card">
+              <strong id="bookCount">0</strong>
+              <span>Book Sources</span>
+            </div>
+            <div class="radar-card">
+              <strong id="paperCount">0</strong>
+              <span>Paper Sources</span>
+            </div>
+            <div class="radar-card">
+              <strong id="webCount">0</strong>
+              <span>Web Sources</span>
+            </div>
+          </div>
+          <div class="panel-hint">
+            Source counts update after each query and can be filtered below.
+          </div>
+        </article>
       </section>
 
       <section id="result" class="result hidden">
-        <article class="card">
+        <article class="panel">
           <h2>Plan Summary</h2>
           <p id="summary"></p>
           <p class="meta">
-            Intent: <span id="intent"></span> · Strategy: <span id="strategy"></span> · Confidence:
+            Intent: <span id="intent"></span> | Strategy: <span id="strategy"></span> | Confidence:
             <span id="confidence"></span>
           </p>
         </article>
 
-        <article class="card">
+        <article class="panel">
           <h2>Structured Plan</h2>
           <div id="answerMarkdown" class="markdown"></div>
         </article>
 
-        <article class="card">
-          <h2>Evidence References</h2>
+        <article class="panel">
+          <h2>Evidence Ledger</h2>
+          <div id="citationFilters" class="citation-filters hidden">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="book">Book</button>
+            <button class="filter-btn" data-filter="paper">Paper</button>
+            <button class="filter-btn" data-filter="website">Website</button>
+          </div>
           <div id="citations" class="citations"></div>
+        </article>
+
+        <article class="panel">
+          <h2>Operator Tools</h2>
+          <div class="tools-grid">
+            <div class="tool-block">
+              <h3>User Profile</h3>
+              <div class="profile-grid">
+                <input id="profileHeight" placeholder="Height (cm)" />
+                <input id="profileWeight" placeholder="Weight (kg)" />
+                <input id="profileAge" placeholder="Age" />
+                <input id="profileGoal" placeholder="Goal (fat_loss / strength ...)" />
+              </div>
+              <button id="saveProfileBtn" class="chip-action">Save Profile</button>
+            </div>
+            <div class="tool-block">
+              <h3>Export</h3>
+              <div class="tool-actions">
+                <button id="copyPlanBtn" class="chip-action">Copy Markdown</button>
+                <button id="downloadPlanBtn" class="chip-action">Download .md</button>
+              </div>
+            </div>
+            <div class="tool-block">
+              <h3>Weekly Check-in</h3>
+              <div id="weeklyChecks" class="weekly-checks"></div>
+            </div>
+          </div>
         </article>
       </section>
     </main>
