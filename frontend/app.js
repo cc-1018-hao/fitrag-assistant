@@ -9,6 +9,9 @@ const strategyEl = document.getElementById("strategy");
 const confidenceEl = document.getElementById("confidence");
 const answerMarkdownEl = document.getElementById("answerMarkdown");
 const citationsEl = document.getElementById("citations");
+const bookCountEl = document.getElementById("bookCount");
+const paperCountEl = document.getElementById("paperCount");
+const webCountEl = document.getElementById("webCount");
 
 if (window.location?.origin?.startsWith("http")) {
   baseUrlInput.value = window.location.origin;
@@ -19,19 +22,44 @@ function setStatus(text, isError = false) {
   statusEl.style.color = isError ? "#b91c1c" : "";
 }
 
+function badgeClass(sourceType) {
+  const t = (sourceType || "unknown").toLowerCase();
+  if (t === "book") return "book";
+  if (t === "paper") return "paper";
+  if (t === "website") return "website";
+  return "unknown";
+}
+
+function updateSourceCounters(citations) {
+  const counts = { book: 0, paper: 0, website: 0 };
+  for (const c of citations || []) {
+    const t = (c.source_type || "unknown").toLowerCase();
+    if (counts[t] !== undefined) counts[t] += 1;
+  }
+  bookCountEl.textContent = counts.book;
+  paperCountEl.textContent = counts.paper;
+  webCountEl.textContent = counts.website;
+}
+
 function renderCitations(citations) {
   citationsEl.innerHTML = "";
   for (const c of citations || []) {
     const card = document.createElement("div");
     card.className = "citation";
     card.innerHTML = `
-      <h3>[${c.id}] ${c.title}</h3>
+      <div class="citation-head">
+        <h3>[${c.id}] ${c.title}</h3>
+        <span class="badge ${badgeClass(c.source_type)}">${(c.source_type || "unknown").toUpperCase()}</span>
+      </div>
       <p>${c.section || ""} ${c.publish_date ? `· ${c.publish_date}` : ""}</p>
+      <p>${c.authors || ""} ${c.venue ? `· ${c.venue}` : ""}</p>
+      ${c.doi ? `<p>DOI: ${c.doi}</p>` : ""}
       <p>${c.snippet || ""}</p>
       ${c.url ? `<a href="${c.url}" target="_blank" rel="noreferrer">Open Source</a>` : ""}
     `;
     citationsEl.appendChild(card);
   }
+  updateSourceCounters(citations);
 }
 
 async function runQuery() {
@@ -54,7 +82,7 @@ async function runQuery() {
         session_id: "web-demo-session",
         query,
         top_k_context_turns: 6,
-        top_k_retrieval: 5,
+        top_k_retrieval: 6,
         max_sub_queries: 3
       })
     });
@@ -84,3 +112,10 @@ async function runQuery() {
 }
 
 askBtn.addEventListener("click", runQuery);
+
+for (const chip of document.querySelectorAll(".chip")) {
+  chip.addEventListener("click", () => {
+    questionInput.value = chip.getAttribute("data-q") || "";
+    questionInput.focus();
+  });
+}

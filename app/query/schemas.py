@@ -37,6 +37,10 @@ class CitationItem(BaseModel):
     section: str
     publish_date: str
     url: str
+    source_type: str
+    authors: str
+    venue: str
+    doi: str
     source: str
     snippet: str
 

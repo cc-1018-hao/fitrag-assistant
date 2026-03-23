@@ -25,6 +25,7 @@ def _get_embeddings(settings: Settings) -> OpenAIEmbeddings:
         api_key=settings.openai_api_key,
         base_url=settings.openai_base_url,
         check_embedding_ctx_length=False,
+        chunk_size=10,
         http_client=build_http_client(settings),
     )
 

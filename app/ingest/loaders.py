@@ -39,6 +39,10 @@ def _load_json_file(path: Path) -> List[Document]:
             "section": item.get("section", ""),
             "publish_date": item.get("publish_date", ""),
             "url": item.get("url", ""),
+            "source_type": item.get("source_type", "unknown"),
+            "authors": item.get("authors", ""),
+            "venue": item.get("venue", ""),
+            "doi": item.get("doi", ""),
         }
         docs.append(Document(page_content=content, metadata=metadata))
     return docs

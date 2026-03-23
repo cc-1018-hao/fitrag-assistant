@@ -1,0 +1,101 @@
+[
+  {
+    "title": "ACSM's Guidelines for Exercise Testing and Prescription (12th Edition)",
+    "section": "Exercise Prescription Framework",
+    "publish_date": "2025-01-01",
+    "url": "https://chapters.acsm.org/education-resources/books/guidelines-exercise-testing-prescription/",
+    "source_type": "book",
+    "authors": "American College of Sports Medicine",
+    "venue": "ACSM",
+    "doi": "",
+    "content": "The ACSM framework emphasizes individualized exercise prescription by combining baseline assessment, progression principles, and risk management. Programs should adjust frequency, intensity, time, and type according to goals and response."
+  },
+  {
+    "title": "NSCA Essentials of Strength Training and Conditioning (5th Edition)",
+    "section": "Program Design and Progression",
+    "publish_date": "2024-01-01",
+    "url": "https://www.nsca.com/certification/cscs/essentials-of-strength-training-and-conditioning-5th-edition/",
+    "source_type": "book",
+    "authors": "National Strength and Conditioning Association",
+    "venue": "NSCA",
+    "doi": "",
+    "content": "Strength program design should be periodized and goal-specific. Progression can be achieved by manipulating intensity, volume, exercise selection, rest intervals, and weekly structure while tracking adaptation and fatigue."
+  },
+  {
+    "title": "Advanced Sports Nutrition (3rd Edition)",
+    "section": "Fueling Strategy",
+    "publish_date": "2025-01-01",
+    "url": "https://us.humankinetics.com/products/advanced-sports-nutrition-3rd-edition-epub",
+    "source_type": "book",
+    "authors": "Dan Benardot",
+    "venue": "Human Kinetics",
+    "doi": "",
+    "content": "Sports nutrition planning links training demand with energy availability, carbohydrate periodization, protein distribution, hydration strategy, and recovery fueling based on athlete needs and schedule."
+  },
+  {
+    "title": "A systematic review, meta-analysis and meta-regression of protein supplementation on resistance training-induced gains in muscle mass and strength",
+    "section": "Protein and Hypertrophy",
+    "publish_date": "2018-02-01",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/28698222/",
+    "source_type": "paper",
+    "authors": "Morton RW et al.",
+    "venue": "Br J Sports Med",
+    "doi": "10.1136/bjsports-2017-097608",
+    "content": "Protein supplementation can improve lean mass outcomes during resistance training, especially when baseline intake is lower. Benefits plateau as daily protein intake approaches an evidence-based target range."
+  },
+  {
+    "title": "Dose-response relationship between weekly resistance training volume and increases in muscle mass",
+    "section": "Volume and Muscle Gain",
+    "publish_date": "2019-06-01",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/27433992/",
+    "source_type": "paper",
+    "authors": "Schoenfeld BJ et al.",
+    "venue": "J Sports Sci",
+    "doi": "10.1080/02640414.2016.1210197",
+    "content": "Higher weekly training volume is generally associated with greater hypertrophy, though practical limits and recovery constraints must be considered. Program progression should balance stimulus and recoverability."
+  },
+  {
+    "title": "International Society of Sports Nutrition Position Stand: protein and exercise",
+    "section": "Protein Recommendations",
+    "publish_date": "2017-12-01",
+    "url": "https://jissn.biomedcentral.com/articles/10.1186/s12970-017-0177-8",
+    "source_type": "paper",
+    "authors": "Jager R et al.",
+    "venue": "JISSN",
+    "doi": "10.1186/s12970-017-0177-8",
+    "content": "Position statements summarize evidence for daily protein targets, per-meal distribution, and timing around exercise. Recommendations vary with training status, energy availability, and performance goals."
+  },
+  {
+    "title": "Physical Activity Guidelines for Americans",
+    "section": "Weekly Activity Targets",
+    "publish_date": "2018-11-01",
+    "url": "https://health.gov/our-work/nutrition-physical-activity/physical-activity-guidelines",
+    "source_type": "website",
+    "authors": "U.S. Department of Health and Human Services",
+    "venue": "health.gov",
+    "doi": "",
+    "content": "General adult guidance emphasizes regular aerobic activity and muscle-strengthening sessions each week. Dose can be scaled according to baseline status and health context."
+  },
+  {
+    "title": "WHO Guidelines on physical activity and sedentary behaviour",
+    "section": "Global Public Health Guidance",
+    "publish_date": "2020-11-01",
+    "url": "https://www.who.int/publications/i/item/9789240015128",
+    "source_type": "website",
+    "authors": "World Health Organization",
+    "venue": "WHO",
+    "doi": "",
+    "content": "WHO guidance provides population-level recommendations for activity and sedentary behavior reduction across age groups, with emphasis on regular movement, progression, and inclusivity."
+  },
+  {
+    "title": "Nutrition and Physical Fitness (Open Textbook)",
+    "section": "Energy Balance and Performance",
+    "publish_date": "2022-01-01",
+    "url": "https://pressbooks.calstate.edu/nutritionandfitness/",
+    "source_type": "website",
+    "authors": "Open Educational Authors",
+    "venue": "Pressbooks",
+    "doi": "",
+    "content": "Open educational chapters connect core nutrition concepts with physical activity applications, including weight management, macro planning, and practical behavior strategies."
+  }
+]

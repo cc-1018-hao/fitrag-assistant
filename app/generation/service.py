@@ -26,6 +26,10 @@ def _build_citations(hits: List[RetrieveHit], max_items: int = 4) -> List[Citati
                 section=str(md.get("section", "")),
                 publish_date=str(md.get("publish_date", "")),
                 url=str(md.get("url", "")),
+                source_type=str(md.get("source_type", "unknown")),
+                authors=str(md.get("authors", "")),
+                venue=str(md.get("venue", "")),
+                doi=str(md.get("doi", "")),
                 source=str(md.get("source", "")),
                 snippet=_trim(hit.content, 180),
             )
@@ -120,6 +124,11 @@ def generate_answer_from_hits(query: str, intent: str, hits: List[RetrieveHit]) 
         + "\n".join(f"{i}. {x}" for i, x in enumerate(recovery, start=1))
         + "\n\n### Safety\n"
         + "\n".join(f"{i}. {x}" for i, x in enumerate(safety, start=1))
+        + "\n\n### References\n"
+        + "\n".join(
+            f"- [{c.id}] ({c.source_type}) {c.title} {f'| DOI: {c.doi}' if c.doi else ''} {f'| {c.url}' if c.url else ''}"
+            for c in citations
+        )
     )
 
     return GeneratedAnswer(

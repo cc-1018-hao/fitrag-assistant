@@ -3,59 +3,93 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FitRAG Assistant</title>
+    <title>FitRAG Coach</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div class="bg-blobs" aria-hidden="true">
-      <span class="blob b1"></span>
-      <span class="blob b2"></span>
-      <span class="blob b3"></span>
-    </div>
-    <main class="page">
+    <div class="noise"></div>
+    <main class="wrap">
       <header class="hero">
-        <p class="tag">Fitness · Nutrition · RAG</p>
-        <h1>FitRAG Assistant</h1>
-        <p class="sub">Ask one question and get a structured plan with traceable citations.</p>
+        <div class="hero-copy">
+          <p class="kicker">FITNESS · NUTRITION · EVIDENCE</p>
+          <h1>FitRAG Coach</h1>
+          <p>
+            Build training and nutrition plans powered by books, papers, and trusted websites with
+            traceable citations.
+          </p>
+          <div class="tags">
+            <span>🏋️ Progressive Overload</span>
+            <span>🥗 Nutrition Strategy</span>
+            <span>📚 Evidence Citation</span>
+          </div>
+        </div>
+        <div class="hero-stat">
+          <div class="stat-card">
+            <strong id="bookCount">0</strong>
+            <span>Book Sources</span>
+          </div>
+          <div class="stat-card">
+            <strong id="paperCount">0</strong>
+            <span>Paper Sources</span>
+          </div>
+          <div class="stat-card">
+            <strong id="webCount">0</strong>
+            <span>Web Sources</span>
+          </div>
+        </div>
       </header>
 
-      <section class="panel">
-        <div class="controls">
+      <section class="query-panel">
+        <div class="field">
           <label for="baseUrl">API Base URL</label>
           <input id="baseUrl" value="http://127.0.0.1:8000" />
         </div>
-        <div class="controls">
-          <label for="question">Your Question</label>
+        <div class="field">
+          <label for="question">Ask Your Goal</label>
           <textarea
             id="question"
             rows="4"
-            placeholder="How can I lose fat while keeping strength and avoid shoulder overuse?"
+            placeholder="Example: I want to lose fat while keeping strength, and my shoulder feels unstable during bench press."
           ></textarea>
         </div>
-        <button id="askBtn" class="ask-btn">Generate Plan</button>
+        <div class="quick-actions">
+          <button class="chip" data-q="I want to lose fat while keeping muscle. How should I set calories and protein?">
+            Fat Loss + Muscle
+          </button>
+          <button class="chip" data-q="How do I increase squat strength over 8 weeks without overtraining?">
+            Strength Block
+          </button>
+          <button class="chip" data-q="My shoulder hurts in bench press. How should I adjust training safely?">
+            Injury Prevention
+          </button>
+        </div>
+        <button id="askBtn" class="cta">Generate Evidence-Based Plan</button>
         <p id="status" class="status"></p>
       </section>
 
       <section id="result" class="result hidden">
         <article class="card">
-          <h2>Summary</h2>
+          <h2>Plan Summary</h2>
           <p id="summary"></p>
-          <p class="meta">Intent: <span id="intent"></span> · Strategy: <span id="strategy"></span> · Confidence: <span id="confidence"></span></p>
+          <p class="meta">
+            Intent: <span id="intent"></span> · Strategy: <span id="strategy"></span> · Confidence:
+            <span id="confidence"></span>
+          </p>
         </article>
 
         <article class="card">
-          <h2>Plan</h2>
+          <h2>Structured Plan</h2>
           <div id="answerMarkdown" class="markdown"></div>
         </article>
 
         <article class="card">
-          <h2>Citations</h2>
+          <h2>Evidence References</h2>
           <div id="citations" class="citations"></div>
         </article>
       </section>
