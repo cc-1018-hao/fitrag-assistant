@@ -1,4 +1,4 @@
-const askBtn = document.getElementById("askBtn");
+﻿const askBtn = document.getElementById("askBtn");
 const baseUrlInput = document.getElementById("baseUrl");
 const questionInput = document.getElementById("question");
 const statusEl = document.getElementById("status");
@@ -9,9 +9,25 @@ const strategyEl = document.getElementById("strategy");
 const confidenceEl = document.getElementById("confidence");
 const answerMarkdownEl = document.getElementById("answerMarkdown");
 const citationsEl = document.getElementById("citations");
+const citationFiltersEl = document.getElementById("citationFilters");
 const bookCountEl = document.getElementById("bookCount");
 const paperCountEl = document.getElementById("paperCount");
 const webCountEl = document.getElementById("webCount");
+const saveProfileBtn = document.getElementById("saveProfileBtn");
+const copyPlanBtn = document.getElementById("copyPlanBtn");
+const downloadPlanBtn = document.getElementById("downloadPlanBtn");
+const weeklyChecksEl = document.getElementById("weeklyChecks");
+const profileHeight = document.getElementById("profileHeight");
+const profileWeight = document.getElementById("profileWeight");
+const profileAge = document.getElementById("profileAge");
+const profileGoal = document.getElementById("profileGoal");
+
+let latestAnswerMarkdown = "";
+let latestCitations = [];
+let activeFilter = "all";
+const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const PROFILE_KEY = "fitrag_profile_v1";
+const WEEK_KEY = "fitrag_week_checks_v1";
 
 if (window.location?.origin?.startsWith("http")) {
   baseUrlInput.value = window.location.origin;
@@ -41,9 +57,15 @@ function updateSourceCounters(citations) {
   webCountEl.textContent = counts.website;
 }
 
+function filteredCitations(citations) {
+  if (activeFilter === "all") return citations || [];
+  return (citations || []).filter((c) => (c.source_type || "unknown").toLowerCase() === activeFilter);
+}
+
 function renderCitations(citations) {
+  const list = filteredCitations(citations);
   citationsEl.innerHTML = "";
-  for (const c of citations || []) {
+  for (const c of list) {
     const card = document.createElement("div");
     card.className = "citation";
     card.innerHTML = `
@@ -62,13 +84,104 @@ function renderCitations(citations) {
   updateSourceCounters(citations);
 }
 
+function loadProfile() {
+  try {
+    const p = JSON.parse(localStorage.getItem(PROFILE_KEY) || "{}");
+    profileHeight.value = p.height || "";
+    profileWeight.value = p.weight || "";
+    profileAge.value = p.age || "";
+    profileGoal.value = p.goal || "";
+  } catch {
+    // ignore
+  }
+}
+
+function saveProfile() {
+  const payload = {
+    height: profileHeight.value.trim(),
+    weight: profileWeight.value.trim(),
+    age: profileAge.value.trim(),
+    goal: profileGoal.value.trim()
+  };
+  localStorage.setItem(PROFILE_KEY, JSON.stringify(payload));
+  setStatus("Profile saved.");
+}
+
+function appendProfileContext(query) {
+  try {
+    const p = JSON.parse(localStorage.getItem(PROFILE_KEY) || "{}");
+    const parts = [];
+    if (p.height) parts.push(`height ${p.height} cm`);
+    if (p.weight) parts.push(`weight ${p.weight} kg`);
+    if (p.age) parts.push(`age ${p.age}`);
+    if (p.goal) parts.push(`goal ${p.goal}`);
+    if (parts.length === 0) return query;
+    return `${query}\n\nProfile context: ${parts.join(", ")}.`;
+  } catch {
+    return query;
+  }
+}
+
+function copyPlan() {
+  if (!latestAnswerMarkdown) {
+    setStatus("No plan to copy yet.", true);
+    return;
+  }
+  navigator.clipboard.writeText(latestAnswerMarkdown).then(
+    () => setStatus("Plan copied to clipboard."),
+    () => setStatus("Copy failed.", true)
+  );
+}
+
+function downloadPlan() {
+  if (!latestAnswerMarkdown) {
+    setStatus("No plan to download yet.", true);
+    return;
+  }
+  const blob = new Blob([latestAnswerMarkdown], { type: "text/markdown;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "fitrag-plan.md";
+  a.click();
+  URL.revokeObjectURL(url);
+  setStatus("Plan downloaded.");
+}
+
+function loadWeeklyChecks() {
+  let done = [];
+  try {
+    done = JSON.parse(localStorage.getItem(WEEK_KEY) || "[]");
+    if (!Array.isArray(done)) done = [];
+  } catch {
+    done = [];
+  }
+  weeklyChecksEl.innerHTML = "";
+  weekDays.forEach((d, i) => {
+    const btn = document.createElement("button");
+    btn.className = "week-day" + (done.includes(i) ? " done" : "");
+    btn.textContent = d;
+    btn.addEventListener("click", () => {
+      const set = new Set(done);
+      if (set.has(i)) set.delete(i);
+      else set.add(i);
+      done = Array.from(set).sort((a, b) => a - b);
+      localStorage.setItem(WEEK_KEY, JSON.stringify(done));
+      loadWeeklyChecks();
+    });
+    weeklyChecksEl.appendChild(btn);
+  });
+}
+
 async function runQuery() {
   const baseUrl = baseUrlInput.value.trim().replace(/\/+$/, "");
-  const query = questionInput.value.trim();
-  if (!query) {
+  const queryRaw = questionInput.value.trim();
+  if (!queryRaw) {
     setStatus("Please enter a question.", true);
     return;
   }
+
+  const query = appendProfileContext(queryRaw);
 
   askBtn.disabled = true;
   setStatus("Generating...");
@@ -95,12 +208,19 @@ async function runQuery() {
     const data = await resp.json();
     const generated = data.generated_answer || {};
 
+    latestAnswerMarkdown = generated.answer_markdown || "";
+    latestCitations = generated.citations || [];
+    activeFilter = "all";
+    document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
+    document.querySelector('.filter-btn[data-filter="all"]')?.classList.add("active");
+    citationFiltersEl.classList.remove("hidden");
+
     summaryEl.textContent = generated.summary || "No summary.";
     intentEl.textContent = data.preprocess?.intent || "-";
     strategyEl.textContent = data.adaptive_plan?.strategy || "-";
     confidenceEl.textContent = generated.confidence ?? "-";
-    answerMarkdownEl.textContent = generated.answer_markdown || "";
-    renderCitations(generated.citations || []);
+    answerMarkdownEl.textContent = latestAnswerMarkdown;
+    renderCitations(latestCitations);
 
     resultEl.classList.remove("hidden");
     setStatus("Done.");
@@ -112,6 +232,9 @@ async function runQuery() {
 }
 
 askBtn.addEventListener("click", runQuery);
+saveProfileBtn.addEventListener("click", saveProfile);
+copyPlanBtn.addEventListener("click", copyPlan);
+downloadPlanBtn.addEventListener("click", downloadPlan);
 
 for (const chip of document.querySelectorAll(".chip")) {
   chip.addEventListener("click", () => {
@@ -119,3 +242,16 @@ for (const chip of document.querySelectorAll(".chip")) {
     questionInput.focus();
   });
 }
+
+for (const btn of document.querySelectorAll(".filter-btn")) {
+  btn.addEventListener("click", () => {
+    activeFilter = btn.getAttribute("data-filter") || "all";
+    document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderCitations(latestCitations);
+  });
+}
+
+loadProfile();
+loadWeeklyChecks();
+
