@@ -80,6 +80,9 @@ def process_user_query_with_retrieval(
     top_k_context_turns: int,
     top_k_retrieval: int,
     max_sub_queries: int,
+    user_profile: Dict[str, object] | None = None,
+    constraints: Dict[str, object] | None = None,
+    adjustment: Dict[str, object] | None = None,
 ) -> ChatQueryResponse:
     preprocess = preprocess_user_query(
         session_id=session_id,
@@ -129,5 +132,8 @@ def process_user_query_with_retrieval(
             query=query,
             intent=intent,
             hits=merged_hits,
+            user_profile=user_profile or {},
+            constraints=constraints or {},
+            adjustment=adjustment or {},
         ),
     )

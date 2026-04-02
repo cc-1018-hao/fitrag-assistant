@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,126 +7,231 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div class="grid-overlay"></div>
-    <main class="console">
-      <header class="topbar">
-        <div class="logo-stack">
-          <p class="kicker">JIANSHEN ASSISTANT / TACTICAL MODE</p>
+    <div class="bg-grid"></div>
+    <div class="bg-blobs"></div>
+    <main class="app-shell">
+      <header class="hero">
+        <div class="hero-left">
+          <p class="kicker">FITNESS · NUTRITION · EVIDENCE</p>
           <h1>健身助手</h1>
-          <p class="sub">基于书籍、论文与网站证据，生成可执行的训练与营养方案。</p>
+          <p class="hero-sub">
+            用可追溯证据生成训练与营养计划，支持一键调整、长期追踪和报告导出。
+          </p>
+          <div class="hero-tags">
+            <span>渐进式超载</span>
+            <span>营养配比</span>
+            <span>风险提示</span>
+            <span>可点击引用</span>
+          </div>
         </div>
-        <div class="status-chip">SYSTEM READY</div>
+        <div class="hero-right">
+          <div class="stat-card">
+            <strong id="evidenceCount">0</strong>
+            <span>证据条目</span>
+          </div>
+          <div class="stat-card">
+            <strong id="freshCount">0</strong>
+            <span>高时效证据</span>
+          </div>
+          <div class="stat-card">
+            <strong id="historyCount">0</strong>
+            <span>历史计划</span>
+          </div>
+        </div>
       </header>
 
-      <section class="tactical-grid">
-        <article class="panel panel-main">
-          <h2>Command Input</h2>
-          <div class="field">
-            <label for="baseUrl">API Endpoint</label>
-            <input id="baseUrl" value="http://127.0.0.1:8000" />
-          </div>
-          <div class="field">
-            <label for="question">Mission Prompt</label>
-            <textarea
-              id="question"
-              rows="5"
-              placeholder="Example: I want to cut fat while keeping strength and protect my shoulder."
-            ></textarea>
-          </div>
-          <div class="quick-actions">
-            <button class="chip" data-q="I want to lose fat while keeping muscle. How should I set calories and protein?">
-              Fat Cut
-            </button>
-            <button class="chip" data-q="How do I increase squat strength over 8 weeks without overtraining?">
-              Strength Block
-            </button>
-            <button class="chip" data-q="My shoulder hurts in bench press. How should I adjust training safely?">
-              Injury Safe
-            </button>
-          </div>
-          <button id="askBtn" class="cta">Execute Plan Build</button>
-          <p id="status" class="status"></p>
-        </article>
-
-        <article class="panel panel-side">
-          <h2>Evidence Radar</h2>
-          <div class="radar-list">
-            <div class="radar-card">
-              <strong id="bookCount">0</strong>
-              <span>Book Sources</span>
-            </div>
-            <div class="radar-card">
-              <strong id="paperCount">0</strong>
-              <span>Paper Sources</span>
-            </div>
-            <div class="radar-card">
-              <strong id="webCount">0</strong>
-              <span>Web Sources</span>
-            </div>
-          </div>
-          <div class="panel-hint">
-            Source counts update after each query and can be filtered below.
-          </div>
-        </article>
+      <section class="panel profile-panel">
+        <div class="panel-title-row">
+          <h2>1. 个人画像与约束</h2>
+          <button id="saveProfileBtn" class="btn btn-ghost">保存画像</button>
+        </div>
+        <div class="profile-grid">
+          <label>
+            年龄
+            <input id="ageInput" type="number" placeholder="例如 23" />
+          </label>
+          <label>
+            性别
+            <select id="sexInput">
+              <option value="">未填写</option>
+              <option value="male">男</option>
+              <option value="female">女</option>
+            </select>
+          </label>
+          <label>
+            身高(cm)
+            <input id="heightInput" type="number" placeholder="例如 176" />
+          </label>
+          <label>
+            体重(kg)
+            <input id="weightInput" type="number" placeholder="例如 79" />
+          </label>
+          <label>
+            活动水平
+            <select id="activityInput">
+              <option value="sedentary">久坐</option>
+              <option value="light">轻量活动</option>
+              <option value="moderate" selected>中等活动</option>
+              <option value="high">高活动</option>
+              <option value="athlete">运动员级</option>
+            </select>
+          </label>
+          <label>
+            训练经验
+            <select id="experienceInput">
+              <option value="beginner">新手</option>
+              <option value="intermediate" selected>中级</option>
+              <option value="advanced">高级</option>
+            </select>
+          </label>
+          <label>
+            每周训练天数
+            <input id="daysInput" type="number" min="1" max="7" value="4" />
+          </label>
+          <label>
+            单次训练时长(分钟)
+            <input id="minutesInput" type="number" min="20" max="150" value="60" />
+          </label>
+          <label>
+            饮食偏好
+            <input id="dietInput" placeholder="例如 高蛋白 / 素食 / 乳糖不耐" />
+          </label>
+          <label>
+            伤病限制
+            <input id="injuryInput" placeholder="例如 肩痛, 膝盖不适" />
+          </label>
+          <label class="span-2">
+            可用器械
+            <input id="equipmentInput" placeholder="例如 哑铃, 杠铃, 拉力器, 跑步机" />
+          </label>
+          <label class="span-2">
+            主要目标
+            <select id="goalInput">
+              <option value="fat_loss">减脂保肌</option>
+              <option value="muscle_gain">增肌</option>
+              <option value="strength">力量提升</option>
+              <option value="nutrition">营养优化</option>
+              <option value="general_fitness">综合体能</option>
+            </select>
+          </label>
+        </div>
       </section>
 
-      <section id="result" class="result hidden">
-        <article class="panel">
-          <h2>Plan Summary</h2>
-          <p id="summary"></p>
-          <p class="meta">
-            Intent: <span id="intent"></span> | Strategy: <span id="strategy"></span> | Confidence:
-            <span id="confidence"></span>
-          </p>
-        </article>
+      <section class="panel command-panel">
+        <h2>2. 输入问题并生成计划</h2>
+        <label for="questionInput">你的目标问题</label>
+        <textarea
+          id="questionInput"
+          rows="4"
+          placeholder="例如：我想在减脂的同时保持力量，每周能练 4 天，有轻微肩痛，应该怎么安排训练和饮食？"
+        ></textarea>
+        <div class="quick-row">
+          <button class="chip quick-query" data-q="我想减脂同时保持力量，请给我 4 天训练和饮食计划。">减脂+保力量</button>
+          <button class="chip quick-query" data-q="我每周练 5 天，想提高卧推和深蹲，如何安排 8 周进阶？">8周力量进阶</button>
+          <button class="chip quick-query" data-q="我总是晚睡恢复差，如何调整训练强度与营养？">恢复优化</button>
+        </div>
+        <div class="action-row">
+          <button id="askBtn" class="btn btn-primary">生成计划</button>
+          <details class="advanced">
+            <summary>高级设置（一般无需修改）</summary>
+            <label for="baseUrlInput">API 地址</label>
+            <input id="baseUrlInput" value="http://127.0.0.1:8000" />
+          </details>
+        </div>
+        <div class="progress-wrap">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+        <p id="statusText" class="status-text">等待输入问题。</p>
+      </section>
 
-        <article class="panel">
-          <h2>Structured Plan</h2>
-          <div id="answerMarkdown" class="markdown"></div>
-        </article>
+      <section class="panel adjust-panel">
+        <h2>3. 一键调整计划</h2>
+        <div class="quick-row">
+          <button class="chip adjust-chip" data-adjust="limited_time">今天只有 40 分钟</button>
+          <button class="chip adjust-chip" data-adjust="pain">关节疼痛，降低风险</button>
+          <button class="chip adjust-chip" data-adjust="no_equipment">无器械训练</button>
+          <button class="chip adjust-chip" data-adjust="plateau">体重停滞两周</button>
+          <button class="chip adjust-chip" data-adjust="travel">出差酒店训练</button>
+        </div>
+        <label for="adjustNoteInput">补充说明（可选）</label>
+        <input id="adjustNoteInput" placeholder="例如：右肩外展疼痛，卧推时明显。" />
+      </section>
 
+      <section id="resultSection" class="result hidden">
         <article class="panel">
-          <h2>Evidence Ledger</h2>
-          <div id="citationFilters" class="citation-filters hidden">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="book">Book</button>
-            <button class="filter-btn" data-filter="paper">Paper</button>
-            <button class="filter-btn" data-filter="website">Website</button>
+          <div class="panel-title-row">
+            <h2>4. 计划总览</h2>
+            <div class="meta-inline">
+              <span>意图: <b id="intentText">-</b></span>
+              <span>策略: <b id="strategyText">-</b></span>
+              <span>置信度: <b id="confidenceText">-</b></span>
+            </div>
           </div>
-          <div id="citations" class="citations"></div>
+          <p id="summaryText" class="summary-text"></p>
+          <div id="safetyAlerts" class="alert-list"></div>
         </article>
 
         <article class="panel">
-          <h2>Operator Tools</h2>
-          <div class="tools-grid">
-            <div class="tool-block">
-              <h3>User Profile</h3>
-              <div class="profile-grid">
-                <input id="profileHeight" placeholder="Height (cm)" />
-                <input id="profileWeight" placeholder="Weight (kg)" />
-                <input id="profileAge" placeholder="Age" />
-                <input id="profileGoal" placeholder="Goal (fat_loss / strength ...)" />
-              </div>
-              <button id="saveProfileBtn" class="chip-action">Save Profile</button>
-            </div>
-            <div class="tool-block">
-              <h3>Export</h3>
-              <div class="tool-actions">
-                <button id="copyPlanBtn" class="chip-action">Copy Markdown</button>
-                <button id="downloadPlanBtn" class="chip-action">Download .md</button>
-              </div>
-            </div>
-            <div class="tool-block">
-              <h3>Weekly Check-in</h3>
-              <div id="weeklyChecks" class="weekly-checks"></div>
+          <h2>5. 每周执行计划</h2>
+          <div id="weeklyPlan" class="weekly-grid"></div>
+        </article>
+
+        <article class="panel">
+          <h2>6. 可执行行动项（可点击证据）</h2>
+          <div id="actionItems" class="action-list"></div>
+        </article>
+
+        <article class="panel">
+          <h2>7. 营养目标</h2>
+          <div id="nutritionTargets" class="nutrition-grid"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-title-row">
+            <h2>8. 证据与引用</h2>
+            <div class="quick-row">
+              <button class="chip filter-chip active" data-filter="all">全部</button>
+              <button class="chip filter-chip" data-filter="book">书籍</button>
+              <button class="chip filter-chip" data-filter="paper">论文</button>
+              <button class="chip filter-chip" data-filter="website">网站</button>
+              <button class="chip filter-chip" data-filter="fresh">高时效</button>
             </div>
           </div>
+          <div id="citationsBox" class="citation-list"></div>
+        </article>
+
+        <article class="panel tracking-panel">
+          <h2>9. 长期追踪</h2>
+          <div class="tracking-inputs">
+            <label>日期<input id="trackDate" type="date" /></label>
+            <label>体重(kg)<input id="trackWeight" type="number" step="0.1" /></label>
+            <label>腰围(cm)<input id="trackWaist" type="number" step="0.1" /></label>
+            <label>训练完成度(1-5)<input id="trackAdherence" type="number" min="1" max="5" /></label>
+            <button id="addTrackBtn" class="btn btn-ghost">添加记录</button>
+          </div>
+          <p id="trackingInsight" class="status-text"></p>
+          <div id="trackingList" class="tracking-list"></div>
+        </article>
+
+        <article class="panel">
+          <h2>10. 导出与分享</h2>
+          <div class="quick-row">
+            <button id="copyMdBtn" class="btn btn-ghost">复制 Markdown</button>
+            <button id="downloadMdBtn" class="btn btn-ghost">下载 Markdown</button>
+            <button id="downloadJsonBtn" class="btn btn-ghost">下载 JSON 报告</button>
+          </div>
+          <pre id="markdownPreview" class="markdown-preview"></pre>
+        </article>
+
+        <article class="panel">
+          <h2>11. 历史计划（可点击复用）</h2>
+          <div id="historyBox" class="history-list"></div>
         </article>
       </section>
     </main>

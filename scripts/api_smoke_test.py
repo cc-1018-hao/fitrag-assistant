@@ -42,12 +42,29 @@ def main() -> None:
             "top_k_context_turns": 6,
             "top_k_retrieval": 5,
             "max_sub_queries": 3,
+            "user_profile": {
+                "age": 24,
+                "sex": "male",
+                "height_cm": 176,
+                "weight_kg": 79,
+                "activity_level": "moderate",
+                "primary_goal": "fat_loss",
+            },
+            "constraints": {
+                "days_per_week": 4,
+                "session_minutes": 60,
+                "equipment": ["barbell", "dumbbell"],
+                "injuries": ["shoulder discomfort"],
+                "diet_preference": "high protein",
+            },
         },
     )
     checks["chat_query_200"] = chat_query.status_code == 200
     cq_json = chat_query.json() if chat_query.status_code == 200 else {}
     checks["chat_query_has_generated"] = bool(cq_json.get("generated_answer"))
     checks["chat_query_has_hits"] = bool(cq_json.get("hits"))
+    checks["chat_query_has_weekly_plan"] = bool(cq_json.get("generated_answer", {}).get("weekly_plan"))
+    checks["chat_query_has_nutrition_targets"] = bool(cq_json.get("generated_answer", {}).get("nutrition_targets"))
 
     output = {
         "passed": all(checks.values()),
@@ -57,6 +74,8 @@ def main() -> None:
             "strategy": cq_json.get("adaptive_plan", {}).get("strategy"),
             "confidence": cq_json.get("generated_answer", {}).get("confidence"),
             "citations": len(cq_json.get("generated_answer", {}).get("citations", [])),
+            "weekly_days": len(cq_json.get("generated_answer", {}).get("weekly_plan", [])),
+            "target_kcal": cq_json.get("generated_answer", {}).get("nutrition_targets", {}).get("calories_kcal"),
         }
         if cq_json
         else None,

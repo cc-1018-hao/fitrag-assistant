@@ -7,6 +7,24 @@ This project is a production-style backend for a fitness assistant powered by RA
 - Self-RAG post-processing (`evidence check + optional second pass + semantic rerank`)
 - Final response generation (`structured answer + citation traceability`)
 
+## 0) Quick Test (3 steps, easiest)
+
+```powershell
+cd "F:\codex learning\backend"
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+```
+
+Open browser:
+- `http://127.0.0.1:8000`
+
+Then:
+1. Fill profile fields (height/weight/goal/days/week).
+2. Enter one question and click `生成计划`.
+3. Verify:
+   - Weekly plan is shown
+   - Nutrition targets are shown
+   - Citation cards are clickable
+
 ## 1) Environment Setup
 
 ```powershell
@@ -38,7 +56,7 @@ Expected:
 ## 3) Start API Service
 
 ```powershell
-uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 Main endpoints:
@@ -53,7 +71,7 @@ Main endpoints:
 Start backend API first:
 
 ```powershell
-uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
 Then start frontend static site:

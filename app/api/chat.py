@@ -29,6 +29,9 @@ def chat_query(payload: ChatQueryRequest) -> ChatQueryResponse:
             top_k_context_turns=payload.top_k_context_turns,
             top_k_retrieval=payload.top_k_retrieval,
             max_sub_queries=payload.max_sub_queries,
+            user_profile=payload.user_profile.model_dump() if payload.user_profile else None,
+            constraints=payload.constraints.model_dump() if payload.constraints else None,
+            adjustment=payload.adjustment.model_dump() if payload.adjustment else None,
         )
     except Exception as exc:  # noqa: BLE001
         raise HTTPException(status_code=500, detail=f"Chat query failed: {exc}") from exc
